@@ -1,0 +1,590 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API for managing movie library",
+    "version": "1.0.0",
+    "title": "Movie Library API"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "auth",
+      "description": "Authentication related endpoints"
+    },
+    {
+      "name": "user",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "movie",
+      "description": "Movie management endpoints"
+    },
+    {
+      "name": "list",
+      "description": "Movie list management endpoints"
+    },
+    {
+      "name": "omdb",
+      "description": "OMDB API endpoints"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Register a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Login a user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete a user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted"
+          }
+        }
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Update a user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User updated"
+          }
+        }
+      }
+    },
+    "/movies": {
+      "post": {
+        "tags": ["movie"],
+        "summary": "Add a new movie",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Movie"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Movie added"
+          }
+        }
+      }
+    },
+    "/movies/rate": {
+      "post": {
+        "tags": ["movie"],
+        "summary": "Rate a movie",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Rating"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie rated"
+          }
+        }
+      }
+    },
+    "/movies/{id}": {
+      "delete": {
+        "tags": ["movie"],
+        "summary": "Delete a movie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Movie deleted"
+          }
+        }
+      },
+      "put": {
+        "tags": ["movie"],
+        "summary": "Update a movie rating",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Rating"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie rating updated"
+          }
+        }
+      }
+    },
+    "/lists": {
+      "post": {
+        "tags": ["list"],
+        "summary": "Create a new movie list",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/List"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "List created"
+          }
+        }
+      },
+      "get": {
+        "tags": ["list"],
+        "summary": "Get all lists for a user",
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/List"
+              }
+            }
+          },
+          "500": {
+            "description": "Error fetching lists"
+          }
+        }
+      }
+    },
+    "/lists/add-movie": {
+      "post": {
+        "tags": ["list"],
+        "summary": "Add a movie to a list",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListMovie"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Movie added to list"
+          }
+        }
+      }
+    },
+    "/lists/update-rating": {
+      "put": {
+        "tags": ["list"],
+        "summary": "Update the rating of a movie in a list",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ListRating"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movie rating updated"
+          }
+        }
+      }
+    },
+    "/lists/{listId}/{movieId}": {
+      "delete": {
+        "tags": ["list"],
+        "summary": "Delete a movie from a list",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "movieId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Movie deleted from list"
+          }
+        }
+      }
+    },
+    "/lists/{listId}/movies": {
+      "get": {
+        "tags": ["list"],
+        "summary": "Get all movies in a list",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MovieWithDetails"
+              }
+            }
+          },
+          "500": {
+            "description": "Error fetching movies from list"
+          }
+        }
+      }
+    },
+    "/omdb/search": {
+      "get": {
+        "tags": ["omdb"],
+        "summary": "Search movies in OMDB",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Search query for movies"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Movies found",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Title": {
+                    "type": "string"
+                  },
+                  "Year": {
+                    "type": "string"
+                  },
+                  "imdbID": {
+                    "type": "string"
+                  },
+                  "Type": {
+                    "type": "string"
+                  },
+                  "Poster": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "required": ["username", "password"]
+    },
+    "Movie": {
+      "type": "object",
+      "properties": {
+        "imdbId": {
+          "type": "string"
+        }
+      },
+      "required": ["imdbId"]
+    },
+    "Rating": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "rating": {
+          "type": "integer"
+        }
+      },
+      "required": ["id", "rating"]
+    },
+    "List": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "integer"
+        }
+      },
+      "required": ["name"]
+    },
+    "ListMovie": {
+      "type": "object",
+      "properties": {
+        "listId": {
+          "type": "integer"
+        },
+        "imdbId": {
+          "type": "string"
+        }
+      },
+      "required": ["listId", "imdbId"]
+    },
+    "ListRating": {
+      "type": "object",
+      "properties": {
+        "listId": {
+          "type": "integer"
+        },
+        "movieId": {
+          "type": "integer"
+        },
+        "rating": {
+          "type": "integer"
+        }
+      },
+      "required": ["listId", "movieId", "rating"]
+    },
+    "MovieWithDetails": {
+      "type": "object",
+      "properties": {
+        "Title": {
+          "type": "string"
+        },
+        "Year": {
+          "type": "string"
+        },
+        "Rated": {
+          "type": "string"
+        },
+        "Released": {
+          "type": "string"
+        },
+        "Runtime": {
+          "type": "string"
+        },
+        "Genre": {
+          "type": "string"
+        },
+        "Director": {
+          "type": "string"
+        },
+        "Writer": {
+          "type": "string"
+        },
+        "Actors": {
+          "type": "string"
+        },
+        "Plot": {
+          "type": "string"
+        },
+        "Language": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        },
+        "Awards": {
+          "type": "string"
+        },
+        "Poster": {
+          "type": "string"
+        },
+        "Ratings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Source": {
+                "type": "string"
+              },
+              "Value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "Metascore": {
+          "type": "string"
+        },
+        "imdbRating": {
+          "type": "string"
+        },
+        "imdbVotes": {
+          "type": "string"
+        },
+        "imdbID": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string"
+        },
+        "DVD": {
+          "type": "string"
+        },
+        "BoxOffice": {
+          "type": "string"
+        },
+        "Production": {
+          "type": "string"
+        },
+        "Website": {
+          "type": "string"
+        },
+        "Response": {
+          "type": "string"
+        },
+        "localId": {
+          "type": "integer"
+        },
+        "movieID": {
+          "type": "integer"
+        },
+        "listId": {
+          "type": "integer"
+        },
+        "userRating": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,101 @@
+.moviePage {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.moviePage svg {
+  font-size: 1.5rem;
+  color: #f7d354;
+}
+
+.movieCard {
+  text-align: center;
+}
+
+.movieCard img,
+.movieCard h2,
+.movieCard p {
+  margin-bottom: 1rem;
+}
+
+.movieCard h2 {
+  font-size: 2rem;
+}
+
+.movieCard p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.tagline {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+}
+
+.info {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinhar à esquerda */
+}
+
+.info h3 {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.description {
+  padding-bottom: 10rem;
+}
+
+.description p {
+  line-height: 1.4rem;
+}
+
+@media (max-width: 640px) {
+  .movieCard img {
+    max-width: 70%;
+  }
+
+  .movieCard h2 {
+    font-size: 1.5rem;
+  }
+
+  .info,
+  .description {
+    text-align: left; /* Alinhar à esquerda no mobile */
+  }
+
+  .moviePage h3 {
+    justify-content: center;
+  }
+
+  .description p {
+    margin: 20px 25px;
+  }
+}
+
+.backButton {
+  background-color: #bbb;
+  color: #000;
+  padding: 0.7rem 1.2rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.backButton:hover {
+  background-color: #f40612;
+  color: #fff;
+}
